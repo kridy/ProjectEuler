@@ -1,0 +1,36 @@
+#!markdown
+
+# Problem 3
+## Largest prime factor
+
+The prime factors of 13195 are 5, 7, 13 and 29.
+
+What is the largest prime factor of the number 600851475143 ?
+
+#!fsharp
+
+    
+
+#!fsharp
+
+let factorize (a : int64) = 
+    let max = int64 (Math.Sqrt (float a))
+    [for n in [1L..(max)] do
+        if a % int64(n) = 0L then 
+            yield n
+            if n <> a/n then
+                yield a/n]
+
+let isPrime x = 
+    match x with
+    | 0L | 1L -> false
+    | 2L -> true
+    | _ -> 
+
+    {2L..int64 (ceil( sqrt( float x)))}     
+    |> Seq.exists (fun y -> x % y = 0L)
+    |> not
+
+let primefactors = factorize >> (List.filter isPrime)
+
+primefactors 600851475143L  |> List.max

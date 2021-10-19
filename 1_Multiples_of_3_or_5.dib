@@ -1,0 +1,24 @@
+#!markdown
+
+# Problem 1
+## Multiples of 3 or 5
+
+If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+
+Find the sum of all the multiples of 3 or 5 below 1000.
+
+#!fsharp
+
+[0..1000]
+|> List.filter (fun x -> x % 3 = 0 || x % 5 = 0)
+|> List.sum
+
+#!fsharp
+
+let sumDivisibleBy (t : int) (n : int) = 
+    let p = ((t-1) / n)
+    n * (p * ( p+1 )) / 2
+
+let sumDivBy = sumDivisibleBy 1000
+
+(sumDivBy 3) + (sumDivBy 5) - (sumDivBy 15)

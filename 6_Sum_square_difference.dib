@@ -1,0 +1,56 @@
+#!markdown
+
+# Problem 6
+## Sum square difference
+
+The sum of the squares of the first ten natural numbers is,
+
+> $$1^2 + 2^2 + ... 10^2 = 385$$
+
+
+The square of the sum of the first ten natural numbers is,
+
+> $$(1 + 2 + ... 10)^2 = 3025$$
+
+Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is
+
+> $$3025 - 382 = 2640$$
+
+Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
+
+#!markdown
+
+## First try
+
+Brutforce! not a problem with a limit of 100
+
+#!fsharp
+
+let max = 100
+
+let pow i = i * i
+
+let sumOfSquare = [1..max] |> List.map pow |> List.sum
+let squareOfSum = [1..max] |> List.sum |> pow
+
+
+squareOfSum - sumOfSquare
+    
+
+#!markdown
+
+## Second try 
+
+The Numerical solution
+
+The Solution [https://projecteuler.net/overview=006](https://projecteuler.net/overview=006)
+
+#!fsharp
+
+let ( ** ) (x : int ) (y : int) = int ( Math.Pow (float x, float y))
+
+let sum_sq limit = ((limit * (limit + 1 )) / 2) ** 2
+let sq_sum limit = (((2 * limit) + 1) * (limit + 1) * limit) / 6
+let diff a =  (sum_sq a) - (sq_sum a)
+
+diff 100

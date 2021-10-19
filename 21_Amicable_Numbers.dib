@@ -1,0 +1,136 @@
+#!markdown
+
+# Problem 21
+
+### Amicable numbers
+
+
+Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n).
+If d(a) = b and d(b) = a, where a ≠ b, then a and b are an amicable pair and each of a and b are called amicable numbers.
+
+For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284. The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.
+
+Evaluate the sum of all the amicable numbers under 10000.
+
+#!markdown
+
+## First try. 
+
+Definitely not the way to do it.
+
+Nothing more to add. Move alonge
+
+#!fsharp
+
+let factorize a =
+    [1 .. (a/2)] |> List.filter (fun n -> a % n = 0)
+
+let sumOfFactors = factorize >> List.sum
+
+let isAmicablePairFast a af b bf =
+    a <> b 
+    && af = b
+    && bf = a
+
+let allFactors = 
+    [1..10000] 
+    |> List.map (fun i -> i, sumOfFactors i )
+    |> List.filter (fun (_, fs) -> fs > 1)
+
+let allpairs = [for x in allFactors do
+                    for y in allFactors do
+                        yield (x,y)] 
+
+let aPairsSum = 
+    allpairs 
+    |> List.filter (fun ((a,af),(b,bf)) -> isAmicablePairFast a af b bf )
+    |> List.map (fun ((c,_),(_,_)) -> c)
+    |> List.sum
+
+display (aPairsSum)
+
+#!markdown
+
+## Second try.
+Beginning to looks like something.
+
+#!fsharp
+
+let factorize a =
+    [1 .. (a/2)] |> List.filter (fun n -> a % n = 0)
+
+let sumFactors = factorize >> List.sum
+
+let isAmicable i =
+    let pf = sumFactors i    
+    i <> pf && sumFactors pf  = i
+
+let amicables = 
+    [1 .. 10000] 
+    |> List.filter isAmicable 
+    |> List.sum
+
+display amicables
+
+#!markdown
+
+## Third try.
+
+Kind of like second try but with precalculated sumfactors
+
+not realy gaining anything
+
+and it feels like we are rising the complexity a bit!
+
+#!fsharp
+
+let factorize a =
+    [1 .. (a/2)] |> List.filter (fun n -> a % n = 0)
+
+let sumFactors = factorize >> List.sum
+let isAmicable (i,pf,ppf) = i <> pf && ppf = i
+let fst3 (i,_,_) = i
+
+let a = 
+    [for i in [1..10000] do
+        let pf = sumFactors i
+        let ppf = sumFactors pf
+        (i,pf,ppf)]         
+    |> List.filter isAmicable 
+    |> List.map fst3
+    |> List.sum 
+
+display a
+
+#!markdown
+
+## Forth try.
+
+Optimized factorize function
+
+The complexity is lifted in return of 10x performance
+
+More performance could proberly be gained by memoizing the sumFactors function 
+
+#!fsharp
+
+let factorize a = 
+    let max = int (Math.Sqrt (float a))
+    [for n in [1..(max)] do
+        if a % n = 0 then 
+            yield n
+            if n <> a/n then
+                yield a/n]
+
+let sumFactors a = factorize a |> List.filter (fun i -> i <> a) |> List.sum
+
+let isAmicable i =
+    let pf = sumFactors i    
+    i <> pf && sumFactors pf  = i
+
+let amicables = 
+    [1 .. 10000] 
+    |> List.filter isAmicable 
+    |> List.sum
+
+display amicables
