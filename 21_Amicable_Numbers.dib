@@ -106,11 +106,11 @@ display a
 
 ## Forth try.
 
-Optimized factorize function
+There is no doubt that the bottle neck is the factorize function.   
 
-The complexity is lifted in return of 10x performance
+Optimizing the factorize function gives rise to the complexity in return for a 10x gain in performance.
 
-More performance could proberly be gained by memoizing the sumFactors function 
+More performance could proberly be gained by memoizing the sumFactors function.
 
 #!fsharp
 

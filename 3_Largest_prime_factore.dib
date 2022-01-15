@@ -9,10 +9,6 @@ What is the largest prime factor of the number 600851475143 ?
 
 #!fsharp
 
-    
-
-#!fsharp
-
 let factorize (a : int64) = 
     let max = int64 (Math.Sqrt (float a))
     [for n in [1L..(max)] do
